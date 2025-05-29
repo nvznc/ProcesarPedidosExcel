@@ -46,7 +46,7 @@ Public Class frmProcesarPedido
         Public Property NombreVend As String ' Nuevo campo para el nombre de la zona
     End Class
 
-    Private connectionString As String = "Data Source=localhost;Initial Catalog=NauticaAdminDb;User ID=sa;Password=1234;TrustServerCertificate=True;MultipleActiveResultSets=True"
+    Private connectionString As String = "Data Source=SV-NAUTICA-A;Initial Catalog=NauticaAdminDb;User ID=sa;Password=Ay3y39y6;TrustServerCertificate=True;MultipleActiveResultSets=True"
     Private productosPedido As New List(Of ProductoPedido)
     Private clienteSeleccionado As ClienteInfo
 
