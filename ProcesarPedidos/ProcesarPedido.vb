@@ -1,6 +1,6 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
-Imports System.Data.SqlClient
+Imports Microsoft.Data.SqlClient
 Imports System.IO
 Imports System.Windows.Forms
 Imports System.Linq
@@ -46,7 +46,7 @@ Public Class frmProcesarPedido
         Public Property NombreVend As String ' Nuevo campo para el nombre de la zona
     End Class
 
-    Private connectionString As String = "Data Source=SV-NAUTICA-A;Initial Catalog=NauticaAdminDb;User ID=sa;Password=Ay3y39y6;TrustServerCertificate=True;MultipleActiveResultSets=True"
+    Private connectionString As String = "Data Source=localhost;Initial Catalog=NauticaAdminDb;User ID=sa;Password=1234;TrustServerCertificate=True;MultipleActiveResultSets=True"
     Private productosPedido As New List(Of ProductoPedido)
     Private clienteSeleccionado As ClienteInfo
 
@@ -56,9 +56,6 @@ Public Class frmProcesarPedido
     End Sub
     ''CREAR PROCEDIMIENTO PARA VERIFICAR EL ARCHIVO DE EXCEL PARA SABER SI ESTA EXCEDIENDO EL LIMITE DE CREDITO POR EL PEDIDO
     ''SE VAN A VERIFICAR LOS CAMPOS DE: SALDO, LIMITE DE CREDITO Y TOTAL DE PEDIDO.
-    ''AGREGAR CAMPO DE ZONA AL PROCESADOR DE PEDIDO
-    ''MOSTRAR EL VENDEDOR ASIGNADO AL CLIENTE
-    ''
 
 
     Private Sub CargarClientes()
@@ -374,8 +371,8 @@ Public Class frmProcesarPedido
                     Dim nroLote = If(ultimoLote IsNot Nothing, ultimoLote.NroLote, "NO DISPONIBLE")
 
                     Using cmd As New SqlCommand("INSERT INTO SABACKORDER 
-            (NumeroD, FechaPedido, CodProd, NroUnico, NroLote, CantidadPedida, CantidadFaltante, CodClie)
-            VALUES (@NumeroD, @FechaPedido, @CodProd, @NroUnico, @NroLote, @CantidadPedida, @CantidadFaltante, @CodClie)", conn)
+            (NumeroD, FechaPedido, CodProd, NroUnico, NroLote, CantidadPedida, CantidadFaltante, CodClie, CodVend)
+            VALUES (@NumeroD, @FechaPedido, @CodProd, @NroUnico, @NroLote, @CantidadPedida, @CantidadFaltante, @CodClie, @CodVend)", conn)
 
                         cmd.Parameters.AddWithValue("@NumeroD", numeroDocumento)
                         cmd.Parameters.AddWithValue("@FechaPedido", DateTime.Now)
@@ -385,6 +382,7 @@ Public Class frmProcesarPedido
                         cmd.Parameters.AddWithValue("@CantidadPedida", prod.CantidadPedida)
                         cmd.Parameters.AddWithValue("@CantidadFaltante", cantidadFaltante)
                         cmd.Parameters.AddWithValue("@CodClie", clienteSeleccionado.CodClie)
+                        cmd.Parameters.AddWithValue("@CodVend", clienteSeleccionado.CodVend)
 
                         cmd.ExecuteNonQuery()
                     End Using
@@ -408,7 +406,7 @@ Public Class frmProcesarPedido
     End Sub
 
     Sub InsertarEnSaitemfac(conn As SqlConnection, numeroD As String, item As DetalleItemFac)
-        Using cmd As New SqlCommand("INSERT INTO saitemfac (Codsucu, TipoFac, NumeroD, OTipo, ONumero, ONroLinea, ONroLineaC, NumeroE, NroLinea, NroLineaC, CodItem, CodUbic, CodUsua, CODAUTH, CODMECA, CODVEND, Descrip1, Descrip2, Descrip3, Descrip4, Descrip5, Descrip6, Descrip7, Descrip8, Descrip9, Descrip10, Refere, Signo, CantMayor, Cantidad, CantidadD, CantidadT, CantidadO, CantidadA, CantidadU, CantidadUA, ExistAntU, ExistAnt, Tara, Factor, TotalItem, Costo, TipoPVP, Precio, PrecioI, MtoTax, MtoTaxO, PriceO, Descto, NroUnicoL, NroLote, FechaE, FechaL, FechaV, EsServ, Esunid, EsFreeP, EsPesa, UsaServ, DesSeri, Descomp, TIpodata, EsExento, DesLote, CantidadOriginal) VALUES (@Codsucu, @TipoFac, @NumeroD, NULL, NULL, 0, 0, NULL, @NroLinea, 0, @CodItem, @CodUbic, NULL, NULL, NULL, '01', @Descrip1, @Descrip2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, @Refere, 1, 1, @Cantidad, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, @TotalItem, @Costo, 0, @Precio, 0, 0, 0, @Precio, 0, @NroUnicoL, @NroLote, GETDATE(), @FechaL, @FechaV, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, NULL)", conn)
+        Using cmd As New SqlCommand("INSERT INTO saitemfac (Codsucu, TipoFac, NumeroD, OTipo, ONumero, ONroLinea, ONroLineaC, NumeroE, NroLinea, NroLineaC, CodItem, CodUbic, CodUsua, CODAUTH, CODMECA, CODVEND, Descrip1, Descrip2, Descrip3, Descrip4, Descrip5, Descrip6, Descrip7, Descrip8, Descrip9, Descrip10, Refere, Signo, CantMayor, Cantidad, CantidadD, CantidadT, CantidadO, CantidadA, CantidadU, CantidadUA, ExistAntU, ExistAnt, Tara, Factor, TotalItem, Costo, TipoPVP, Precio, PrecioI, MtoTax, MtoTaxO, PriceO, Descto, NroUnicoL, NroLote, FechaE, FechaL, FechaV, EsServ, Esunid, EsFreeP, EsPesa, UsaServ, DesSeri, Descomp, TIpodata, EsExento, DesLote, CantidadOriginal) VALUES (@Codsucu, @TipoFac, @NumeroD, NULL, NULL, 0, 0, NULL, @NroLinea, 0, @CodItem, @CodUbic, NULL, NULL, NULL, @CodVend, @Descrip1, @Descrip2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, @Refere, 1, 1, @Cantidad, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, @TotalItem, @Costo, 0, @Precio, 0, 0, 0, @Precio, 0, @NroUnicoL, @NroLote, GETDATE(), @FechaL, @FechaV, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, NULL)", conn)
 
             cmd.Parameters.AddWithValue("@Codsucu", "00000")
             cmd.Parameters.AddWithValue("@TipoFac", "E")
@@ -428,6 +426,7 @@ Public Class frmProcesarPedido
             cmd.Parameters.AddWithValue("@NroLote", item.Lote.NroLote)
             cmd.Parameters.AddWithValue("@FechaL", item.Lote.FechaL)
             cmd.Parameters.AddWithValue("@FechaV", item.Lote.FechaV)
+            cmd.Parameters.AddWithValue("@CodVend", clienteSeleccionado.CodVend)
 
             cmd.ExecuteNonQuery()
         End Using
@@ -463,9 +462,9 @@ Public Class frmProcesarPedido
             End Using
         End If
         If Not String.IsNullOrEmpty(cliente.CodVend) Then
-            Using cmdZona As New SqlCommand("SELECT Descrip FROM SAVEND WHERE CodVend = @CodVend", conn)
-                cmdZona.Parameters.AddWithValue("@CodVend", cliente.CodVend)
-                Dim result = cmdZona.ExecuteScalar()
+            Using cmdVend As New SqlCommand("SELECT Descrip FROM SAVEND WHERE CodVend = @CodVend", conn)
+                cmdVend.Parameters.AddWithValue("@CodVend", cliente.CodVend)
+                Dim result = cmdVend.ExecuteScalar()
                 If result IsNot Nothing Then
                     cliente.NombreVend = result.ToString()
                 End If
@@ -642,7 +641,7 @@ Public Class frmProcesarPedido
 
             ' Datos del cliente
             cmd.Parameters.AddWithValue("@CodClie", codClie)
-            cmd.Parameters.AddWithValue("@CodVend", codVend)
+            cmd.Parameters.AddWithValue("@CodVend", clienteInfo.CodVend)
             cmd.Parameters.AddWithValue("@CodUbic", codUbic)
             cmd.Parameters.AddWithValue("@Descrip", clienteInfo.Descrip)
             cmd.Parameters.AddWithValue("@Direc1", clienteInfo.Direc1)

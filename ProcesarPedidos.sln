@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ProcesarPedidos", "ProcesarPedidos\ProcesarPedidos.vbproj", "{71C7C34C-9B20-4E0F-92D4-E08461FCB216}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_ProcesarPedidos", "Setup_ProcesarPedidos\Setup_ProcesarPedidos.vdproj", "{42363891-405C-4A10-A9C9-73136A5DDFAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,8 @@ Global
 		{71C7C34C-9B20-4E0F-92D4-E08461FCB216}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71C7C34C-9B20-4E0F-92D4-E08461FCB216}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71C7C34C-9B20-4E0F-92D4-E08461FCB216}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42363891-405C-4A10-A9C9-73136A5DDFAF}.Debug|Any CPU.ActiveCfg = Debug
+		{42363891-405C-4A10-A9C9-73136A5DDFAF}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
