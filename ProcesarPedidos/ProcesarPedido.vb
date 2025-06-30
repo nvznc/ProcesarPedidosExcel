@@ -49,7 +49,6 @@ Public Class frmProcesarPedido
     Private connectionString As String = "Data Source=localhost;Initial Catalog=NauticaAdminDb;User ID=sa;Password=1234;TrustServerCertificate=True;MultipleActiveResultSets=True"
     Private productosPedido As New List(Of ProductoPedido)
     Private clienteSeleccionado As ClienteInfo
-
     Private Sub frmProcesarPedido_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         CargarClientes()
         ConfigurarGrid()
@@ -192,6 +191,8 @@ Public Class frmProcesarPedido
 
         Return lista
     End Function
+
+
 
     Private Sub MostrarProductosEnGrid()
         If productosPedido Is Nothing OrElse productosPedido.Count = 0 Then
